@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taro Yamada | Web Designer Portfolio</title>
+  <!-- Google Fonts: Inter & Noto Sans JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================
+       CSS Variables & Theme Definitions
+       ========================================== */
+    :root {
+      /* Light Mode Colors */
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-elevated: rgba(255, 255, 255, 0.85);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent-primary: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-soft: rgba(37, 99, 235, 0.1);
+      --border-color: #e2e8f0;
+      --card-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+      --card-hover-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.18);
+      --hero-overlay: linear-gradient(135deg, rgba(248, 250, 252, 0.92) 0%, rgba(241, 245, 249, 0.78) 100%);
+      --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      /* Dark Mode Colors */
+      --bg-primary: #0b0f19;
+      --bg-secondary: #151c2c;
+      --bg-elevated: rgba(21, 28, 44, 0.85);
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      --accent-primary: #3b82f6;
+      --accent-hover: #60a5fa;
+      --accent-soft: rgba(59, 130, 246, 0.15);
+      --border-color: #1e293b;
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+      --card-hover-shadow: 0 20px 40px -15px rgba(59, 130, 246, 0.25);
+      --hero-overlay: linear-gradient(135deg, rgba(11, 15, 25, 0.92) 0%, rgba(15, 23, 42, 0.82) 100%);
+    }
+
+    /* ==========================================
+       Reset & Base Styles
+       ========================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans JP', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.75;
+      transition: background-color var(--transition-base), color var(--transition-base);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-base);
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img, svg {
+      max-width: 100%;
+      display: block;
+    }
+
+    button, input, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      border: none;
+      outline: none;
+      background: none;
+    }
+
+    /* ==========================================
+       Layout & Reusable Utility Classes
+       ========================================== */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section {
+      padding: 6rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-subtitle {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-primary);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* Scroll Reveal Animation Classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================
+       Header & Navigation (Flexbox)
+       ========================================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: var(--bg-elevated);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color var(--transition-base), border-color var(--transition-base);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4.5rem;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-primary);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      position: relative;
+      padding: 0.25rem 0;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--accent-primary);
+      transition: width var(--transition-base);
+      border-radius: 2px;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      transform: rotate(12deg) scale(1.05);
+    }
+
+    .theme-toggle svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    [data-theme="light"] .icon-sun { display: none; }
+    [data-theme="light"] .icon-moon { display: block; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+
+    /* Mobile Hamburger Button */
+    .hamburger {
+      display: none;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       1. Hero Section (キャッチコピー + 背景画像)
+       ========================================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 4.5rem;
+      background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--hero-overlay);
+      transition: background var(--transition-base);
+    }
+
+    /* Decorative Floating Blur Orbs */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .hero-orb-1 {
+      width: 360px;
+      height: 360px;
+      background: var(--accent-primary);
+      top: 15%;
+      right: 10%;
+      animation: floatOrb 10s ease-in-out infinite alternate;
+    }
+
+    .hero-orb-2 {
+      width: 280px;
+      height: 280px;
+      background: #8b5cf6;
+      bottom: 10%;
+      left: 5%;
+      animation: floatOrb 12s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -30px) scale(1.1); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+    }
+
+    .hero-title {
+      font-size: clamp(2.25rem, 5.5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--accent-primary), #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-lead {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      max-width: 620px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.9rem 1.85rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+
+    .btn-primary {
+      background-color: var(--accent-primary);
+      color: #ffffff;
+      box-shadow: 0 8px 20px -6px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.65);
+    }
+
+    .btn-outline {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================
+       2. About Section (Who I Am)
+       ========================================== */
+    .about-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      padding: 3.5rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      gap: 3.5rem;
+      transition: background-color var(--transition-base), border-color var(--transition-base);
+    }
+
+    .about-avatar-wrapper {
+      flex-shrink: 0;
+      position: relative;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      padding: 6px;
+      background: linear-gradient(135deg, var(--accent-primary), #8b5cf6);
+      box-shadow: 0 16px 32px -12px rgba(37, 99, 235, 0.35);
+    }
+
+    .about-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg-primary);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-content {
+      flex: 1;
+    }
+
+    .about-greeting {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .about-text {
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-num {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--accent-primary);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    /* ==========================================
+       3. Skills Section (CSS Grid)
+       ========================================== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .skill-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 1.25rem;
+      padding: 2.25rem;
+      box-shadow: var(--card-shadow);
+      transition: all var(--transition-base);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--card-hover-shadow);
+      border-color: var(--accent-primary);
+    }
+
+    .skill-icon {
+      width: 3.25rem;
+      height: 3.25rem;
+      border-radius: 0.85rem;
+      background: var(--accent-soft);
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 0.5rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================
+       4. Works Section (CSS Grid + Filter)
+       ========================================== */
+    .works-filter {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-btn {
+      padding: 0.55rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .work-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      transition: all var(--transition-base);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .work-card.hidden {
+      display: none;
+    }
+
+    .work-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .work-thumb {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: var(--bg-primary);
+    }
+
+    .work-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .work-card:hover .work-thumb img {
+      transform: scale(1.06);
+    }
+
+    .work-category-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--bg-elevated);
+      backdrop-filter: blur(8px);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .work-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .work-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .work-excerpt {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .work-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================
+       5. Contact Section (Get In Touch)
+       ========================================== */
+    .contact-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      padding: 3rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .required-badge {
+      font-size: 0.75rem;
+      color: #ef4444;
+      margin-left: 0.35rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.9rem 1.1rem;
+      border-radius: 0.75rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      transition: all var(--transition-base);
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .form-feedback {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 1rem 1.25rem;
+      border-radius: 0.75rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #10b981;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .form-feedback.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SNS Links inside Contact */
+    .sns-section {
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .sns-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .sns-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .sns-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1.35rem;
+      border-radius: 999px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all var(--transition-base);
+    }
+
+    .sns-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================
+       Footer
+       ========================================== */
+    .footer {
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ==========================================
+       Responsive Design (Mobile & Tablet)
+       ========================================== */
+    @media (max-width: 768px) {
+      .section {
+        padding: 4.5rem 0;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 4.5rem;
+        left: 0;
+        width: 100%;
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border-color);
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1.25rem;
+        box-shadow: var(--card-shadow);
+        transform: translateY(-150%);
+        opacity: 0;
+        pointer-events: none;
+        transition: all var(--transition-base);
+      }
+
+      .nav-menu.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .about-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2.25rem 1.5rem;
+        gap: 2rem;
+      }
+
+      .about-avatar-wrapper {
+        width: 190px;
+        height: 190px;
+      }
+
+      .contact-wrapper {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       Header Navigation
+       ========================================== -->
+  <header class="header">
+    <div class="container nav-container">
+      <a href="#" class="logo">
+        <span class="logo-dot"></span>
+        <span>Taro Yamada</span>
+      </a>
+
+      <nav>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="#works" class="nav-link">Works</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Dark / Light Mode Toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="テーマを切り替える" title="ダークモード / ライトモード切替">
+          <!-- Moon Icon -->
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <!-- Sun Icon -->
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="メニューを開く">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================
+         1. Hero Section (キャッチコピー + 背景画像)
+         ========================================== -->
+    <section class="hero" id="top">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+
+      <div class="container hero-content reveal visible">
+        <div class="hero-badge">
+          <span class="status-dot"></span>
+          <span>現在、新規制作のご依頼を受付中です</span>
+        </div>
+
+        <h1 class="hero-title">
+          想いをカタチに、<br>
+          ビジネスを加速させる<br>
+          <span class="highlight">Webデザイン。</span>
+        </h1>
+
+        <p class="hero-lead">
+          シンプルで洗練されたUIと、ユーザーの心を動かす体験設計。企業のコーポレートサイトから成果にこだわる商品LPまで、目的に寄り添ったWebサイトをデザイン・構築します。
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#works" class="btn btn-primary">
+            <span>制作実績を見る</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+          <a href="#contact" class="btn btn-outline">お問い合わせはこちら</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         2. About Section (自己紹介セクション)
+         ========================================== -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-subtitle">About</span>
+          <h2 class="section-title">Who I Am</h2>
+          <p class="section-desc">人柄と強みをお伝えします。</p>
+        </div>
+
+        <div class="about-card reveal">
+          <!-- プロフィール画像: 清潔感のあるカジュアルな男性のイラスト (丸型で切り抜き) -->
+          <div class="about-avatar-wrapper">
+            <div class="about-avatar">
+              <svg viewBox="0 0 240 240" width="240" height="240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="山田太郎のイラストプロフィール">
+                <defs>
+                  <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#dbeafe" />
+                    <stop offset="100%" stop-color="#eff6ff" />
+                  </linearGradient>
+                </defs>
+                <!-- Background Circle -->
+                <circle cx="120" cy="120" r="120" fill="url(#bgGrad)" />
+                <!-- Casual Hoodie / Jacket & T-shirt -->
+                <path d="M45 240 C45 182, 195 182, 195 240 Z" fill="#1e293b" />
+                <path d="M82 190 L120 235 L158 190 Z" fill="#ffffff" />
+                <!-- Red/Coral Casual Inner Collar Accent -->
+                <path d="M92 190 Q120 212 148 190" fill="none" stroke="#ef4444" stroke-width="8" stroke-linecap="round" />
+                <!-- Neck -->
+                <rect x="103" y="148" width="34" height="46" rx="14" fill="#fde68a" />
+                <path d="M103 165 Q120 178 137 165" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.35" />
+                <!-- Ears -->
+                <circle cx="74" cy="118" r="11" fill="#fde68a" />
+                <circle cx="166" cy="118" r="11" fill="#fde68a" />
+                <!-- Face -->
+                <rect x="76" y="64" width="88" height="100" rx="44" fill="#fef3c7" />
+                <!-- Clean Modern Hair -->
+                <path d="M72 106 C68 62, 102 44, 125 46 C155 46, 174 68, 168 106 C162 82, 148 74, 128 76 C104 78, 86 84, 72 106 Z" fill="#0f172a" />
+                <path d="M95 54 Q120 40 148 56" fill="none" stroke="#334155" stroke-width="3" stroke-linecap="round" />
+                <!-- Eyebrows -->
+                <path d="M93 98 Q102 94 110 97" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+                <path d="M130 97 Q138 94 147 98" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+                <!-- Eyes -->
+                <circle cx="102" cy="110" r="4.5" fill="#0f172a" />
+                <circle cx="138" cy="110" r="4.5" fill="#0f172a" />
+                <circle cx="100.5" cy="108.5" r="1.5" fill="#ffffff" />
+                <circle cx="136.5" cy="108.5" r="1.5" fill="#ffffff" />
+                <!-- Casual Glasses -->
+                <rect x="88" y="100" width="28" height="20" rx="6" fill="none" stroke="#334155" stroke-width="2.5" />
+                <rect x="124" y="100" width="28" height="20" rx="6" fill="none" stroke="#334155" stroke-width="2.5" />
+                <line x1="116" y1="109" x2="124" y2="109" stroke="#334155" stroke-width="2.5" />
+                <!-- Nose -->
+                <path d="M120 112 L118 124 L123 125" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6" />
+                <!-- Friendly Smile -->
+                <path d="M106 136 Q120 148 134 136" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="about-content">
+            <h3 class="about-greeting">「はじめまして、Webデザイナーの山田太郎です。」</h3>
+            <p class="about-text">
+              都内の制作会社で3年間、企業のコーポレートサイトや商品LPの制作に従事し、現在はフリーランスとして活動しています。
+            </p>
+            <p class="about-text">
+              見た目の美しさだけでなく、「誰に・何を伝え・どう行動してもらうか」という情報設計を大切にしています。丁寧なヒアリングを通じてクライアント様の強みを引き出し、ビジネスゴールを達成するためのパートナーとして伴走いたします。
+            </p>
+
+            <div class="about-stats">
+              <div class="stat-item">
+                <span class="stat-num">4+ Years</span>
+                <span class="stat-label">実務経験（制作会社3年＋独立）</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">60+ Sites</span>
+                <span class="stat-label">コーポレート・LP制作実績</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">100%</span>
+                <span class="stat-label">納期遵守・レスポンシブ対応</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         3. Skills Section (推測補完セクション: 技術スタック・得意領域)
+         ========================================== -->
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-subtitle">Skills</span>
+          <h2 class="section-title">What I Do</h2>
+          <p class="section-desc">デザインからコーディングまで一貫して対応可能です。</p>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Skill 1 -->
+          <div class="skill-card reveal">
+            <div class="skill-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="skill-title">UI / UX・Webデザイン</h3>
+            <p class="skill-desc">
+              ターゲット層の分析と情報設計に基づき、直感的で使いやすいインターフェースとブランドイメージを高めるビジュアルをデザインします。
+            </p>
+            <div class="skill-tags">
+              <span class="tag">Figma</span>
+              <span class="tag">Adobe Photoshop</span>
+              <span class="tag">Illustrator</span>
+              <span class="tag">UI/UX設計</span>
+            </div>
+          </div>
+
+          <!-- Skill 2 -->
+          <div class="skill-card reveal">
+            <div class="skill-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            </div>
+            <h3 class="skill-title">フロントエンド実装</h3>
+            <p class="skill-desc">
+              HTML5・CSS3（Flexbox / Grid）とバニラJSを駆使し、スマートフォンからPCまで美しく表示される高速・堅牢なレスポンシブサイトを構築します。
+            </p>
+            <div class="skill-tags">
+              <span class="tag">HTML5</span>
+              <span class="tag">CSS3 (Flexbox / Grid)</span>
+              <span class="tag">JavaScript (Vanilla JS)</span>
+              <span class="tag">Responsive</span>
+            </div>
+          </div>
+
+          <!-- Skill 3 -->
+          <div class="skill-card reveal">
+            <div class="skill-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <h3 class="skill-title">LP制作・改善提案</h3>
+            <p class="skill-desc">
+              商品やサービスの魅力を最大限に引き出すストーリー構成と、コンバージョン率（CVR）を意識した導線設計・マイクロインタラクションを実装します。
+            </p>
+            <div class="skill-tags">
+              <span class="tag">商品LP設計</span>
+              <span class="tag">コーポレートサイト</span>
+              <span class="tag">SEO内部対策</span>
+              <span class="tag">アニメーション演出</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         4. Works Section (推測補完セクション: 制作実績)
+         ========================================== -->
+    <section class="section" id="works">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-subtitle">Works</span>
+          <h2 class="section-title">Selected Works</h2>
+          <p class="section-desc">これまでに手がけたコーポレートサイトや商品LPの一部をご紹介します。</p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="works-filter reveal" role="tablist" aria-label="制作実績カテゴリー">
+          <button class="filter-btn active" data-filter="all">すべて</button>
+          <button class="filter-btn" data-filter="corporate">コーポレートサイト</button>
+          <button class="filter-btn" data-filter="lp">商品・サービスLP</button>
+        </div>
+
+        <!-- Works Grid -->
+        <div class="works-grid reveal">
+          <!-- Work 1 -->
+          <article class="work-card" data-category="corporate">
+            <div class="work-thumb">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="ITソリューション企業 コーポレートサイト" loading="lazy">
+              <span class="work-category-badge">コーポレートサイト</span>
+            </div>
+            <div class="work-body">
+              <div>
+                <h3 class="work-title">NextCloud株式会社 コーポレートサイト</h3>
+                <p class="work-excerpt">BtoB向けクラウドサービス企業のブランド刷新に伴う全面リニューアル。信頼感と先進性を両立したデザイン。</p>
+              </div>
+              <div class="work-meta">
+                <span>Design / HTML・CSS・JS</span>
+                <span>制作期間: 4週間</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Work 2 -->
+          <article class="work-card" data-category="lp">
+            <div class="work-thumb">
+              <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80" alt="オーガニックスキンケア 商品LP" loading="lazy">
+              <span class="work-category-badge">商品LP</span>
+            </div>
+            <div class="work-body">
+              <div>
+                <h3 class="work-title">BOTANICA オーガニック美容液 LP</h3>
+                <p class="work-excerpt">20〜30代女性向けD2Cコスメの新商品ランディングページ。透明感のある世界観と購入導線の最適化でCVR135%を達成。</p>
+              </div>
+              <div class="work-meta">
+                <span>Planning / Design / Coding</span>
+                <span>制作期間: 3週間</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Work 3 -->
+          <article class="work-card" data-category="corporate">
+            <div class="work-thumb">
+              <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="建築デザイン事務所 Webサイト" loading="lazy">
+              <span class="work-category-badge">コーポレートサイト</span>
+            </div>
+            <div class="work-body">
+              <div>
+                <h3 class="work-title">Aoyama Architects 建築設計事務所</h3>
+                <p class="work-excerpt">余白を活かしたミニマルなグリッドレイアウトと、滑らかなスクロールアニメーションで施工事例の魅力を引き立てるサイト。</p>
+              </div>
+              <div class="work-meta">
+                <span>UI Design / Vanilla JS</span>
+                <span>制作期間: 5週間</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         5. Contact Section (お問い合わせセクション)
+         ========================================== -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-subtitle">Contact</span>
+          <h2 class="section-title">Get In Touch</h2>
+          <p class="section-desc">
+            制作のご依頼、お見積もり、その他ご相談はお気軽にどうぞ。2営業日以内に返信いたします。
+          </p>
+        </div>
+
+        <div class="contact-wrapper reveal">
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name" class="form-label">お名前<span class="required-badge">*必須</span></label>
+              <input type="text" id="name" name="name" class="form-control" placeholder="例：山田 太郎" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">メールアドレス<span class="required-badge">*必須</span></label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="例：hello@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="form-label">お問い合わせ内容<span class="required-badge">*必須</span></label>
+              <textarea id="message" name="message" class="form-control" placeholder="ご検討中のサイト種別（コーポレートサイト、LPなど）、ご予算、ご希望納期などをご記入ください。" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary submit-btn">
+              <span>メッセージを送信する</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            </button>
+
+            <div class="form-feedback" id="formFeedback" role="status">
+              お問い合わせありがとうございます！内容を確認の上、2営業日以内にご連絡いたします。
+            </div>
+          </form>
+
+          <!-- SNSリンク: X (Twitter), Instagram (日々のデザイン発信用) -->
+          <div class="sns-section">
+            <p class="sns-label">日々のデザイン発信・最新情報はSNSでもご覧いただけます</p>
+            <div class="sns-links">
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="sns-btn" aria-label="X (Twitter)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                <span>X (Twitter)</span>
+              </a>
+
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="sns-btn" aria-label="Instagram">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span>Instagram</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       Footer
+       ========================================== -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Taro Yamada Design. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       Vanilla JavaScript
+       ========================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. ダークモード / ライトモード切り替え機能
+      const htmlEl = document.documentElement;
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const savedTheme = localStorage.getItem('portfolio-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (savedTheme) {
+        htmlEl.setAttribute('data-theme', savedTheme);
+      } else if (prefersDark) {
+        htmlEl.setAttribute('data-theme', 'dark');
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlEl.getAttribute('data-theme');
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        htmlEl.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('portfolio-theme', nextTheme);
+      });
+
+      // 2. スマホ用ハンバーガーメニュー開閉
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const navMenu = document.getElementById('navMenu');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      hamburgerBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('open');
+      });
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('open');
+        });
+      });
+
+      // 3. スクロールに応じたフェードインアニメーション (Intersection Observer)
+      const revealItems = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.12
+      });
+
+      revealItems.forEach(item => revealObserver.observe(item));
+
+      // 4. 制作実績カテゴリーフィルター
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const workCards = document.querySelectorAll('.work-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filterValue = btn.getAttribute('data-filter');
+          workCards.forEach(card => {
+            const category = card.getAttribute('data-category');
+            if (filterValue === 'all' || filterValue === category) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        });
+      });
+
+      // 5. お問い合わせフォーム送信インタラクション
+      const contactForm = document.getElementById('contactForm');
+      const formFeedback = document.getElementById('formFeedback');
+
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        formFeedback.classList.add('show');
+        contactForm.reset();
+
+        setTimeout(() => {
+          formFeedback.classList.remove('show');
+        }, 6000);
+      });
+    });
+  </script>
+</body>
+</html>
+
